@@ -63,7 +63,7 @@ async def _on_download_complete(api, data):
         gid = data["params"][0]["gid"]
         download = await api.tellStatus(gid)
         options = await api.getOption(gid)
-    except:
+    except Exception:
         return
     if options.get("follow-torrent", "") == "false":
         return
@@ -182,7 +182,7 @@ async def _on_download_error(api, data):
             return
         error = download.get("errorMessage", "")
         LOGGER.info(f"Download Error: {error}")
-    except:
+    except Exception:
         pass
     if task := await get_task_by_gid(gid):
         await task.listener.on_download_error(error)

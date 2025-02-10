@@ -226,9 +226,9 @@ async def load_configurations():
         )
     ).wait()
 
-    environ.get("PORT") or environ.get("BASE_URL_PORT", 80)
+    PORT = environ.get("PORT") or environ.get("BASE_URL_PORT", 80)
     await create_subprocess_shell(
-        f"gunicorn -k uvicorn.workers.UvicornWorker -w 1 web.wserver:app --bind 0.0.0.0:{Config.BASE_URL_PORT}",
+        f"gunicorn -k uvicorn.workers.UvicornWorker -w 1 web.wserver:app --bind 0.0.0.0:{PORT}",
     )
 
     if await aiopath.exists("cfg.zip"):
