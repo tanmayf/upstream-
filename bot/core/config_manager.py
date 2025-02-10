@@ -13,8 +13,7 @@ class Config:
     CMD_SUFFIX: str = ""
     DATABASE_URL: str = ""
     DEFAULT_UPLOAD: str = "rc"
-    DOWNLOAD_DIR: str = "/usr/src/app/downloads/"
-    EXTENSION_FILTER: str = ""
+    EXCLUDED_EXTENSIONS: str = ""
     FFMPEG_CMDS: ClassVar[dict[str, list[str]]] = {}
     FILELION_API: str = ""
     GDRIVE_ID: str = ""
@@ -27,7 +26,7 @@ class Config:
     LEECH_FILENAME_PREFIX: str = ""
     LEECH_SPLIT_SIZE: int = 2097152000
     MEDIA_GROUP: bool = False
-    MIXED_LEECH: bool = False
+    HYBRID_LEECH: bool = False
     NAME_SUBSTITUTE: str = ""
     OWNER_ID: int = 0
     QUEUE_ALL: int = 0
@@ -47,15 +46,17 @@ class Config:
     SUDO_USERS: str = ""
     TELEGRAM_API: int = 0
     TELEGRAM_HASH: str = ""
+    TG_PROXY = None
     THUMBNAIL_LAYOUT: str = ""
     TORRENT_TIMEOUT: int = 0
-    USER_TRANSMISSION: bool = False
+    UPLOAD_PATHS = {}
     UPSTREAM_REPO: str = ""
     UPSTREAM_BRANCH: str = "main"
     USER_SESSION_STRING: str = ""
+    USER_TRANSMISSION: bool = False
     USE_SERVICE_ACCOUNTS: bool = False
     WEB_PINCODE: bool = False
-    YT_DLP_OPTIONS: str = ""
+    YT_DLP_OPTIONS: str = {}
 
     # INKYPINKY
     METADATA_KEY: str = ""
@@ -71,9 +72,7 @@ class Config:
 
     @classmethod
     def get(cls, key):
-        if hasattr(cls, key):
-            return getattr(cls, key)
-        raise KeyError(f"{key} is not a valid configuration key.")
+        return getattr(cls, key) if hasattr(cls, key) else None
 
     @classmethod
     def set(cls, key, value):

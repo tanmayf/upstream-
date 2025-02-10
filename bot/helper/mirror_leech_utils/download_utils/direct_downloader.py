@@ -57,4 +57,4 @@ async def add_direct_download(listener, path):
         if listener.multi <= 1:
             await send_status_message(listener.message)
 
-    await sync_to_async(directListener.download, contents)
+    await directListener.download(contents)

@@ -21,7 +21,7 @@ GLOBAL_GID = set()
 class TelegramDownloadHelper:
     def __init__(self, listener):
         self._processed_bytes = 0
-        self._start_time = time()
+        self._start_time = 1
         self._listener = listener
         self._id = ""
         self.session = ""
@@ -70,6 +70,7 @@ class TelegramDownloadHelper:
         await self._listener.on_download_complete()
         async with global_lock:
             GLOBAL_GID.remove(self._id)
+        return
 
     async def _download(self, message, path):
         try:
@@ -92,6 +93,7 @@ class TelegramDownloadHelper:
             await self._on_download_complete()
         elif not self._listener.is_cancelled:
             await self._on_download_error("Internal error occurred")
+        return
 
     async def add_download(self, message, path, session):
         self.session = session
@@ -151,6 +153,7 @@ class TelegramDownloadHelper:
                                 GLOBAL_GID.remove(self._id)
                         return
 
+                self._start_time = time()
                 await self._on_download_start(gid, add_to_queue)
                 await self._download(message, path)
             else:

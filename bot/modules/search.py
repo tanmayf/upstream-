@@ -7,6 +7,7 @@ from bot.helper.ext_utils.status_utils import get_readable_file_size
 from bot.helper.ext_utils.telegraph_helper import telegraph
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.message_utils import edit_message, send_message
+from ..core.torrent_manager import TorrentManager
 
 PLUGINS = []
 TELEGRAPH_LIMIT = 300
@@ -32,42 +33,24 @@ SEARCH_PLUGINS = [
 
 
 async def initiate_search_tools():
-    qb_plugins = await sync_to_async(xnox_client.search_plugins)
-    globals()["PLUGINS"] = []
+    qb_plugins = await TorrentManager.qbittorrent.search.plugins()
     if qb_plugins:
-        names = [plugin["name"] for plugin in qb_plugins]
-        await sync_to_async(
-            xnox_client.search_uninstall_plugin,
-            names=names,
-        )
-    await sync_to_async(
-        xnox_client.search_install_plugin,
-        SEARCH_PLUGINS,
-    )
+        names = [plugin.name for plugin in qb_plugins]
+        await TorrentManager.qbittorrent.search.uninstall_plugin(names)
+        PLUGINS.clear()
+    await TorrentManager.qbittorrent.search.install_plugin(SEARCH_PLUGINS)
 
 
 async def search(key, site, message):
     LOGGER.info(f"PLUGINS Searching: {key} from {site}")
-    search = await sync_to_async(
-        xnox_client.search_start,
-        pattern=key,
-        plugins=site,
-        category="all",
-    )
+    search = await TorrentManager.qbittorrent.search.start(pattern=key, plugins=site, category="all")
     search_id = search.id
     while True:
-        result_status = await sync_to_async(
-            xnox_client.search_status,
-            search_id=search_id,
-        )
+        result_status = await TorrentManager.qbittorrent.search.status(search_id)
         status = result_status[0].status
         if status != "Running":
             break
-    dict_search_results = await sync_to_async(
-        xnox_client.search_results,
-        search_id=search_id,
-        limit=TELEGRAPH_LIMIT,
-    )
+    dict_search_results = await TorrentManager.qbittorrent.search.results(id=search_id, limit=TELEGRAPH_LIMIT)
     search_results = dict_search_results.results
     total_results = dict_search_results.total
     if total_results == 0:
@@ -78,7 +61,7 @@ async def search(key, site, message):
         return
     msg = f"<b>Found {min(total_results, TELEGRAPH_LIMIT)}</b>"
     msg += f" <b>result(s) for <i>{key}</i>\nTorrent Site:- <i>{site.capitalize()}</i></b>"
-    await sync_to_async(xnox_client.search_delete, search_id=search_id)
+    await TorrentManager.qbittorrent.search.delete(search_id)
     link = await get_result(search_results, key, message)
     buttons = ButtonMaker()
     buttons.url_button("🔎 VIEW", link)
@@ -134,9 +117,9 @@ async def get_result(search_results, key, message):
 async def plugin_buttons(user_id):
     buttons = ButtonMaker()
     if not PLUGINS:
-        pl = await sync_to_async(xnox_client.search_plugins)
-        for name in pl:
-            PLUGINS.append(name["name"])
+        pl = await TorrentManager.qbittorrent.search.plugins()
+        for i in pl:
+            PLUGINS.append(i.name)
     for siteName in PLUGINS:
         buttons.data_button(
             siteName.capitalize(),

@@ -23,7 +23,7 @@ from .telegraph_helper import telegraph
 
 COMMAND_USAGE = {}
 
-THREAD_POOL = ThreadPoolExecutor(max_workers=3000)
+THREAD_POOL = ThreadPoolExecutor(max_workers=500)
 
 
 class SetInterval:
@@ -111,9 +111,11 @@ def arg_parser(items, arg_base):
         "-fd",
         "-fu",
         "-sync",
-        "-ml",
+        "-hl",
         "-doc",
         "-med",
+        "-ut",
+        "-bt",
     }
 
     while i < total:
@@ -122,15 +124,17 @@ def arg_parser(items, arg_base):
             if arg_start == -1:
                 arg_start = i
             if (i + 1 == total and part in bool_arg_set) or part in [
-                "-s",
-                "-j",
-                "-f",
-                "-fd",
-                "-fu",
-                "-sync",
-                "-ml",
-                "-doc",
-                "-med",
+                    "-s",
+                    "-j",
+                    "-f",
+                    "-fd",
+                    "-fu",
+                    "-sync",
+                    "-hl",
+                    "-doc",
+                    "-med",
+                    "-ut",
+                    "-bt",
             ]:
                 arg_base[part] = True
             else:
