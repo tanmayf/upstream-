@@ -21,6 +21,7 @@ getLogger("aiohttp").setLevel(WARNING)
 aria2 = None
 qbittorrent = None
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global aria2, qbittorrent
