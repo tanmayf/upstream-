@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 from uvloop import install
 
 install()
