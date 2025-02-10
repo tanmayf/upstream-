@@ -32,7 +32,8 @@ class TorrentManager:
         )
         downloads = []
         results = await gather(
-            cls.aria2.tellActive(), cls.aria2.tellWaiting(0, 1000)
+            cls.aria2.tellActive(),
+            cls.aria2.tellWaiting(0, 1000),
         )
         for res in results:
             downloads.extend(res)
@@ -61,7 +62,8 @@ class TorrentManager:
     async def change_aria2_option(cls, key, value):
         downloads = []
         results = await gather(
-            cls.aria2.tellActive(), cls.aria2.tellWaiting(0, 1000)
+            cls.aria2.tellActive(),
+            cls.aria2.tellWaiting(0, 1000),
         )
         for res in results:
             downloads.extend(res)
@@ -69,7 +71,7 @@ class TorrentManager:
         for download in downloads:
             if download.get("status", "") != "complete":
                 tasks.append(
-                    cls.aria2.changeOption(download.get("gid"), {key: value})
+                    cls.aria2.changeOption(download.get("gid"), {key: value}),
                 )
         if tasks:
             try:

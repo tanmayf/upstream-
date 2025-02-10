@@ -44,7 +44,9 @@ async def initiate_search_tools():
 async def search(key, site, message):
     LOGGER.info(f"PLUGINS Searching: {key} from {site}")
     search = await TorrentManager.qbittorrent.search.start(
-        pattern=key, plugins=site, category="all"
+        pattern=key,
+        plugins=site,
+        category="all",
     )
     search_id = search.id
     while True:
@@ -53,7 +55,8 @@ async def search(key, site, message):
         if status != "Running":
             break
     dict_search_results = await TorrentManager.qbittorrent.search.results(
-        id=search_id, limit=TELEGRAPH_LIMIT
+        id=search_id,
+        limit=TELEGRAPH_LIMIT,
     )
     search_results = dict_search_results.results
     total_results = dict_search_results.total

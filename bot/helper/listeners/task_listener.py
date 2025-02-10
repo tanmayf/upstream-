@@ -192,7 +192,8 @@ class TaskListener(TaskConfig):
         else:
             up_path = dl_path
         await remove_excluded_files(
-            self.up_dir or self.dir, self.excluded_extensions
+            self.up_dir or self.dir,
+            self.excluded_extensions,
         )
         if not Config.QUEUE_ALL:
             async with queue_dict_lock:
