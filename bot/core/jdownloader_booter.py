@@ -5,13 +5,12 @@ from re import match
 from aiofiles.os import listdir, makedirs, path, rename
 from aioshutil import rmtree
 
+from bot import LOGGER
+from bot.helper.ext_utils.bot_utils import cmd_exec, new_task
 from myjd import MyJdApi
 
-from .. import LOGGER
 from .aeon_client import TgClient
 from .config_manager import Config
-from ..helper.ext_utils.bot_utils import cmd_exec, new_task
-
 
 
 class JDownloader(MyJdApi):

@@ -42,7 +42,7 @@ class Aria2Status:
 
     def processed_bytes(self):
         return get_readable_file_size(
-            int(self._download.get("completedLength", "0"))
+            int(self._download.get("completedLength", "0")),
         )
 
     def speed(self):

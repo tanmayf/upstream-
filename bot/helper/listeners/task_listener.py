@@ -7,8 +7,8 @@ from aioshutil import move
 from requests import utils as rutils
 
 from bot import (
-    LOGGER,
     DOWNLOAD_DIR,
+    LOGGER,
     intervals,
     non_queued_dl,
     non_queued_up,
@@ -19,8 +19,8 @@ from bot import (
     task_dict,
     task_dict_lock,
 )
-from ...core.torrent_manager import TorrentManager
 from bot.core.config_manager import Config
+from bot.core.torrent_manager import TorrentManager
 from bot.helper.common import TaskConfig
 from bot.helper.ext_utils.bot_utils import sync_to_async
 from bot.helper.ext_utils.db_handler import database
@@ -28,9 +28,9 @@ from bot.helper.ext_utils.files_utils import (
     clean_download,
     clean_target,
     create_recursive_symlink,
-    remove_excluded_files,
     get_path_size,
     join_files,
+    remove_excluded_files,
 )
 from bot.helper.ext_utils.links_utils import is_gdrive_id
 from bot.helper.ext_utils.status_utils import get_readable_file_size
@@ -124,13 +124,15 @@ class TaskListener(TaskConfig):
                                 des_id = next(
                                     iter(self.same_dir[self.folder_name]["tasks"]),
                                 )
-                                des_path = f"{DOWNLOAD_DIR}{des_id}{self.folder_name}"
+                                des_path = (
+                                    f"{DOWNLOAD_DIR}{des_id}{self.folder_name}"
+                                )
                                 await makedirs(des_path, exist_ok=True)
                                 LOGGER.info(
                                     f"Moving files from {self.mid} to {des_id}",
                                 )
                                 for item in await listdir(spath):
-                                    if item.endswith((".aria2")):
+                                    if item.endswith(".aria2"):
                                         continue
                                     item_path = (
                                         f"{self.dir}{self.folder_name}/{item}"
@@ -189,7 +191,9 @@ class TaskListener(TaskConfig):
             LOGGER.info(f"Shortcut created: {dl_path} -> {up_path}")
         else:
             up_path = dl_path
-        await remove_excluded_files(self.up_dir or self.dir, self.excluded_extensions)
+        await remove_excluded_files(
+            self.up_dir or self.dir, self.excluded_extensions
+        )
         if not Config.QUEUE_ALL:
             async with queue_dict_lock:
                 if self.mid in non_queued_dl:

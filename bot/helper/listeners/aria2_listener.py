@@ -54,10 +54,8 @@ async def _on_download_started(api, data):
         msg, button = await stop_duplicate_check(task.listener)
         if msg:
             await task.listener.on_download_error(msg, button)
-            try:
+            with contextlib.suppress(Exception):
                 await api.forceRemove(gid)
-            except:
-                pass
 
 
 async def _on_download_complete(api, data):
@@ -97,10 +95,8 @@ async def _on_download_complete(api, data):
             await task.listener.on_download_complete()
             if intervals["stopAll"]:
                 return
-            try:
+            with contextlib.suppress(Exception):
                 await api.forceRemove(gid)
-            except:
-                pass
 
 
 async def _on_bt_download_complete(api, data):
@@ -145,10 +141,8 @@ async def _on_bt_download_complete(api, data):
             await task.listener.on_upload_error(
                 f"Seeding stopped with Ratio: {task.ratio()} and Time: {task.seeding_time()}",
             )
-            try:
+            with contextlib.suppress(Exception):
                 await api.forceRemove(gid)
-            except:
-                pass
         elif (
             task.listener.seed
             and download.get("status", "") == "complete"
@@ -165,10 +159,8 @@ async def _on_bt_download_complete(api, data):
             LOGGER.info(f"Seeding started: {aria2_name(download)} - Gid: {gid}")
             await update_status_message(task.listener.message.chat.id)
         else:
-            try:
+            with contextlib.suppress(Exception):
                 await api.forceRemove(gid)
-            except:
-                pass
 
 
 async def _on_download_stopped(_, data):

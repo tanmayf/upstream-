@@ -7,7 +7,7 @@ from pyrogram.filters import regex, user
 from pyrogram.handlers import CallbackQueryHandler
 from yt_dlp import YoutubeDL
 
-from bot import LOGGER, bot_loop, task_dict_lock, DOWNLOAD_DIR
+from bot import DOWNLOAD_DIR, LOGGER, bot_loop, task_dict_lock
 from bot.core.config_manager import Config
 from bot.helper.aeon_utils.access_check import error_check
 from bot.helper.ext_utils.bot_utils import (
@@ -472,7 +472,7 @@ class YtDlp(TaskListener):
                         qual = value
                         continue
                     qual = value
-                
+
                 options[key] = value
         options["playlist_items"] = "0"
 

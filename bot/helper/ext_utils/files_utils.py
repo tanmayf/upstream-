@@ -1,13 +1,10 @@
 from asyncio import create_subprocess_exec, sleep, wait_for
 from asyncio.subprocess import PIPE
-from os import makedirs, readlink, walk
 from os import path as ospath
+from os import readlink, walk
 from re import IGNORECASE, escape
 from re import search as re_search
 from re import split as re_split
-from shutil import rmtree
-from subprocess import run as srun
-from sys import exit
 
 from aiofiles.os import (
     listdir,
@@ -27,11 +24,8 @@ from aiofiles.os import (
 from aioshutil import rmtree as aiormtree
 from magic import Magic
 
-from bot import LOGGER, aria2, xnox_client
-from bot.core.config_manager import Config
-
-from ... import LOGGER, DOWNLOAD_DIR
-from ...core.torrent_manager import TorrentManager
+from bot import DOWNLOAD_DIR, LOGGER
+from bot.core.torrent_manager import TorrentManager
 
 from .bot_utils import cmd_exec, sync_to_async
 from .exceptions import NotSupportedExtractionArchive

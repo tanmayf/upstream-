@@ -1,4 +1,5 @@
 from uvloop import install
+
 install()
 
 import os
@@ -26,7 +27,6 @@ from pytz import timezone
 from qbittorrentapi import Client as QbClient
 from tzlocal import get_localzone
 from uvloop import install
-
 
 getLogger("requests").setLevel(WARNING)
 getLogger("urllib3").setLevel(WARNING)

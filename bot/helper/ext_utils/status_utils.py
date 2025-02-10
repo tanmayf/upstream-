@@ -1,15 +1,12 @@
 import contextlib
-from asyncio import iscoroutinefunction, gather
+from asyncio import gather, iscoroutinefunction
 from html import escape
 from time import time
 
 from psutil import cpu_percent, disk_usage, virtual_memory
 
-from bot import bot_start_time, status_dict, task_dict, task_dict_lock, DOWNLOAD_DIR
-from bot.core.config_manager import Config
+from bot import DOWNLOAD_DIR, bot_start_time, status_dict, task_dict, task_dict_lock
 from bot.helper.telegram_helper.button_build import ButtonMaker
-
-from .bot_utils import sync_to_async
 
 SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
 

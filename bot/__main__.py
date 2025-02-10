@@ -1,9 +1,6 @@
 # ruff: noqa: E402
 from asyncio import gather
-from signal import SIGINT, signal
 
-from pyrogram.filters import regex
-from pyrogram.handlers import CallbackQueryHandler
 from pyrogram.types import BotCommand
 
 from . import LOGGER, bot_loop
@@ -20,7 +17,6 @@ bot_loop.run_until_complete(load_settings())
 
 from .core.aeon_client import TgClient
 from .helper.telegram_helper.bot_commands import BotCommands
-
 
 # Commands and Descriptions
 COMMANDS = {
@@ -76,23 +72,26 @@ async def main():
         update_qb_options,
         update_variables,
     )
+
     await gather(TgClient.start_bot(), TgClient.start_user())
     await gather(load_configurations(), update_variables())
     from .core.torrent_manager import TorrentManager
+
     await TorrentManager.initiate()
     await gather(
         update_qb_options(),
         update_aria2_options(),
     )
-    from .helper.ext_utils.files_utils import clean_all
     from .core.jdownloader_booter import jdownloader
+    from .helper.ext_utils.files_utils import clean_all
     from .helper.ext_utils.telegraph_helper import telegraph
     from .helper.mirror_leech_utils.rclone_utils.serve import rclone_serve_booter
     from .modules import (
-        initiate_search_tools,
         get_packages_version,
+        initiate_search_tools,
         restart_notification,
     )
+
     await gather(
         set_commands(),
         jdownloader.boot(),
@@ -110,9 +109,9 @@ async def main():
 
 bot_loop.run_until_complete(main())
 
-from .helper.listeners.aria2_listener import add_aria2_callbacks
 from .core.handlers import add_handlers
 from .helper.ext_utils.bot_utils import create_help_buttons
+from .helper.listeners.aria2_listener import add_aria2_callbacks
 
 add_aria2_callbacks()
 create_help_buttons()

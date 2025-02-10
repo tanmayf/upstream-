@@ -199,7 +199,7 @@ class RcloneTransferHelper:
             and not self._listener.rc_flags
         ):
             cmd.extend(
-                ("--drive-acknowledge-abuse", "--tpslimit", "1", "--transfers", "1")
+                ("--drive-acknowledge-abuse", "--tpslimit", "1", "--transfers", "1"),
             )
 
         await self._start_download(cmd, remote_type)
@@ -348,7 +348,7 @@ class RcloneTransferHelper:
                     "1",
                     "--transfers",
                     "1",
-                )
+                ),
             )
 
         result = await self._start_upload(cmd, remote_type)

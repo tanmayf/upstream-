@@ -36,8 +36,7 @@ leech_options = [
     "LEECH_SPLIT_SIZE",
     # "LEECH_DUMP_CHAT",
     "LEECH_FILENAME_PREFIX",
-    "LEECH_FILENAME_CAPTION"
-    "THUMBNAIL_LAYOUT",
+    "LEECH_FILENAME_CAPTIONTHUMBNAIL_LAYOUT",
     "USER_DUMP",
     "USER_SESSION",
 ]
@@ -75,7 +74,8 @@ async def get_user_settings(from_user, stype="main"):
         if user_dict.get("LEECH_FILENAME_CAPTION", False):
             lprefix = user_dict["LEECH_FILENAME_CAPTION"]
         elif (
-            "LEECH_FILENAME_CAPTION" not in user_dict and Config.LEECH_FILENAME_CAPTION
+            "LEECH_FILENAME_CAPTION" not in user_dict
+            and Config.LEECH_FILENAME_CAPTION
         ):
             lcap = Config.LEECH_FILENAME_CAPTION
         else:
@@ -92,16 +92,14 @@ async def get_user_settings(from_user, stype="main"):
             "User Session",
             f"userset {user_id} menu USER_SESSION",
         )
-        if user_dict.get("USER_DUMP", False):
-            usess = "added"
-        else:
-            usess = "None"
+        usess = "added" if user_dict.get("USER_DUMP", False) else "None"
         if user_dict.get("AS_DOCUMENT", False) or (
             "AS_DOCUMENT" not in user_dict and Config.AS_DOCUMENT
         ):
             ltype = "DOCUMENT"
             buttons.data_button(
-                "Send As Media", f"userset {user_id} tog AS_DOCUMENT f"
+                "Send As Media",
+                f"userset {user_id} tog AS_DOCUMENT f",
             )
         else:
             ltype = "MEDIA"
@@ -248,11 +246,13 @@ Stop Duplicate is <b>{sd_msg}</b>"""
 
         ns_msg = "Added" if user_dict.get("NAME_SUBSTITUTE", False) else "None"
         buttons.data_button(
-            "Name Subtitute", f"userset {user_id} menu NAME_SUBSTITUTE"
+            "Name Subtitute",
+            f"userset {user_id} menu NAME_SUBSTITUTE",
         )
 
         buttons.data_button(
-            "YT-DLP Options", f"userset {user_id} menu YT_DLP_OPTIONS"
+            "YT-DLP Options",
+            f"userset {user_id} menu YT_DLP_OPTIONS",
         )
         if user_dict.get("YT_DLP_OPTIONS", False):
             ytopt = user_dict["YT_DLP_OPTIONS"]
@@ -276,7 +276,7 @@ Stop Duplicate is <b>{sd_msg}</b>"""
             wmt = Config.WATERMARK_KEY
         else:
             wmt = "None"
-        
+
         buttons.data_button("Metadata", f"userset {user_id} menu METADATA_KEY")
         if user_dict.get("METADATA_KEY", False):
             mdt = user_dict["METADATA_KEY"]
@@ -333,7 +333,7 @@ async def add_file(_, message, ftype):
         tpath = f"{getcwd()}/tokens/"
         await makedirs(tpath, exist_ok=True)
         des_dir = f"{tpath}{user_id}.pickle"
-        await message.download(file_name=des_dir) # TODO user font
+        await message.download(file_name=des_dir)  # TODO user font
     update_user_ldata(user_id, ftype, des_dir)
     await delete_message(message)
     await database.update_user_doc(user_id, ftype, des_dir)

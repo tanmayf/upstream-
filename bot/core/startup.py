@@ -9,6 +9,7 @@ from aioshutil import rmtree
 from bot import (
     LOGGER,
     aria2_options,
+    auth_chats,
     drives_ids,
     drives_names,
     excluded_extensions,
@@ -16,9 +17,8 @@ from bot import (
     qbit_options,
     rss_dict,
     shorteners_list,
-    user_data,
-    auth_chats,
     sudo_users,
+    user_data,
 )
 from bot.helper.ext_utils.db_handler import database
 
@@ -37,7 +37,7 @@ async def update_qb_options():
                 del qbit_options[k]
         qbit_options["web_ui_password"] = "mltbmltb"
         await TorrentManager.qbittorrent.app.set_preferences(
-            {"web_ui_password": "mltbmltb"}
+            {"web_ui_password": "mltbmltb"},
         )
     else:
         await TorrentManager.qbittorrent.app.set_preferences(qbit_options)
@@ -222,11 +222,11 @@ async def load_configurations():
             pass
     await (
         await create_subprocess_shell(
-            "chmod 600 .netrc && cp .netrc /root/.netrc && chmod +x aria-nox.sh && ./aria-nox.sh"
+            "chmod 600 .netrc && cp .netrc /root/.netrc && chmod +x aria-nox.sh && ./aria-nox.sh",
         )
     ).wait()
 
-    PORT = environ.get("PORT") or environ.get("BASE_URL_PORT", 80)
+    environ.get("PORT") or environ.get("BASE_URL_PORT", 80)
     await create_subprocess_shell(
         f"gunicorn -k uvicorn.workers.UvicornWorker -w 1 web.wserver:app --bind 0.0.0.0:{Config.BASE_URL_PORT}",
     )

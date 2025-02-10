@@ -273,7 +273,9 @@ def fuckingfast_dl(url):
         match = search(pattern, content)
 
         if not match:
-            raise DirectDownloadLinkException("ERROR: Could not find download link in page")
+            raise DirectDownloadLinkException(
+                "ERROR: Could not find download link in page"
+            )
 
         direct_url = match.group(2)
         return direct_url

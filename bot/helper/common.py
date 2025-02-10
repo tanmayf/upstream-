@@ -13,6 +13,7 @@ from aioshutil import move, rmtree
 from pyrogram.enums import ChatAction
 
 from bot import (
+    DOWNLOAD_DIR,
     LOGGER,
     cpu_eater_lock,
     excluded_extensions,
@@ -21,7 +22,6 @@ from bot import (
     task_dict,
     task_dict_lock,
     user_data,
-    DOWNLOAD_DIR,
 )
 from bot.core.aeon_client import TgClient
 from bot.core.config_manager import Config
@@ -166,7 +166,11 @@ class TaskConfig:
         self.name_sub = (
             self.name_sub
             or self.user_dict.get("NAME_SUBSTITUTE", False)
-            or (Config.NAME_SUBSTITUTE if "NAME_SUBSTITUTE" not in self.user_dict else "")
+            or (
+                Config.NAME_SUBSTITUTE
+                if "NAME_SUBSTITUTE" not in self.user_dict
+                else ""
+            )
         )
         self.metadata = (
             self.metadata
@@ -176,7 +180,9 @@ class TaskConfig:
         self.watermark = (
             self.watermark
             or self.user_dict.get("WATERMARK_KEY", False)
-            or (Config.WATERMARK_KEY if "WATERMARK_KEY" not in self.user_dict else "")
+            or (
+                Config.WATERMARK_KEY if "WATERMARK_KEY" not in self.user_dict else ""
+            )
         )
         if self.name_sub:
             self.name_sub = [x.split("/") for x in self.name_sub.split(" | ")]
@@ -436,7 +442,10 @@ class TaskConfig:
                     if self.as_med
                     else (
                         self.user_dict.get("AS_DOCUMENT", False)
-                        or (Config.AS_DOCUMENT and "AS_DOCUMENT" not in self.user_dict)
+                        or (
+                            Config.AS_DOCUMENT
+                            and "AS_DOCUMENT" not in self.user_dict
+                        )
                     )
                 )
 
@@ -607,7 +616,9 @@ class TaskConfig:
         async with task_dict_lock:
             task_dict[self.mid] = SevenZStatus(self, sevenz, gid, "Extract")
         for dirpath, _, files in await sync_to_async(
-            walk, self.up_dir or self.dir, topdown=False
+            walk,
+            self.up_dir or self.dir,
+            topdown=False,
         ):
             for file_ in files:
                 if self.is_cancelled:

@@ -17,25 +17,23 @@ from pyrogram.filters import create
 from pyrogram.handlers import MessageHandler
 
 from bot import (
-    LOGGER,
-    aria2_options,
+    auth_chats,
     drives_ids,
     drives_names,
     excluded_extensions,
-    auth_chats,
-    sudo_users,
     index_urls,
     intervals,
     jd_listener_lock,
+    sudo_users,
     task_dict,
 )
-from ..core.torrent_manager import TorrentManager
 from bot.core.aeon_client import TgClient
 from bot.core.config_manager import Config
-from bot.core.startup import update_variables
-from bot.helper.ext_utils.bot_utils import SetInterval, new_task, sync_to_async
-from bot.helper.ext_utils.db_handler import database
 from bot.core.jdownloader_booter import jdownloader
+from bot.core.startup import update_variables
+from bot.core.torrent_manager import TorrentManager
+from bot.helper.ext_utils.bot_utils import SetInterval, new_task
+from bot.helper.ext_utils.db_handler import database
 from bot.helper.ext_utils.task_manager import start_from_queued
 from bot.helper.mirror_leech_utils.rclone_utils.serve import rclone_serve_booter
 from bot.helper.telegram_helper.button_build import ButtonMaker
@@ -159,7 +157,7 @@ async def edit_variable(_, message, pre_message, key):
             chat_id, *thread_ids = id_.split("|")
             chat_id = int(chat_id.strip())
             if thread_ids:
-                thread_ids = list(map(lambda x: int(x.strip()), thread_ids))
+                thread_ids = [int(x.strip()) for x in thread_ids]
                 auth_chats[chat_id] = thread_ids
             else:
                 auth_chats[chat_id] = []
@@ -462,7 +460,8 @@ async def load_config():
 
     if Config.TORRENT_TIMEOUT:
         await TorrentManager.change_aria2_option(
-            "bt-stop-timeout", f"{Config.TORRENT_TIMEOUT}"
+            "bt-stop-timeout",
+            f"{Config.TORRENT_TIMEOUT}",
         )
         await database.update_aria2("bt-stop-timeout", f"{Config.TORRENT_TIMEOUT}")
 

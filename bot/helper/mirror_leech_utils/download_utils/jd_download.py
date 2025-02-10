@@ -11,8 +11,8 @@ from pyrogram.filters import regex, user
 from pyrogram.handlers import CallbackQueryHandler
 
 from bot import LOGGER, jd_downloads, jd_listener_lock, task_dict, task_dict_lock
-from bot.helper.ext_utils.bot_utils import new_task
 from bot.core.jdownloader_booter import jdownloader
+from bot.helper.ext_utils.bot_utils import new_task
 from bot.helper.ext_utils.task_manager import (
     check_running_tasks,
     stop_duplicate_check,

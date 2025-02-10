@@ -1,7 +1,6 @@
 from time import time
 
 from bot import LOGGER, jd_downloads, jd_listener_lock
-from bot.helper.ext_utils.bot_utils import async_to_sync
 from bot.core.jdownloader_booter import jdownloader
 from bot.helper.ext_utils.status_utils import (
     MirrorStatus,

@@ -1,7 +1,6 @@
 import contextlib
 from asyncio import create_subprocess_exec, gather, sleep, wait_for
 from asyncio.subprocess import PIPE
-from os import cpu_count
 from os import path as ospath
 from re import escape
 from re import search as re_search
@@ -12,8 +11,7 @@ from aiofiles.os import path as aiopath
 from aioshutil import rmtree
 from PIL import Image
 
-from bot import LOGGER, cpu_no, DOWNLOAD_DIR
-from bot.core.config_manager import Config
+from bot import DOWNLOAD_DIR, LOGGER, cpu_no
 
 from .bot_utils import cmd_exec, sync_to_async
 from .files_utils import get_mime_type, is_archive, is_archive_split

@@ -18,7 +18,7 @@ class DirectListener:
     def processed_bytes(self):
         if self.download_task:
             return self._proc_bytes + int(
-                self.download_task.get("completedLength", "0")
+                self.download_task.get("completedLength", "0"),
             )
         return self._proc_bytes
 
@@ -67,7 +67,7 @@ class DirectListener:
                     break
                 if self.download_task.get("status", "") == "complete":
                     self._proc_bytes += int(
-                        self.download_task.get("totalLength", "0")
+                        self.download_task.get("totalLength", "0"),
                     )
                     await TorrentManager.aria2.forceRemove(gid)
                     break
@@ -77,7 +77,7 @@ class DirectListener:
             return
         if self._failed == len(contents):
             await self.listener.on_download_error(
-                "All files are failed to download!"
+                "All files are failed to download!",
             )
             return
         await self.listener.on_download_complete()

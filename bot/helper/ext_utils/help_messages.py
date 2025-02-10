@@ -1,5 +1,5 @@
+from bot.core.mltb_client import TgClient
 from bot.helper.telegram_helper.bot_commands import BotCommands
-from ...core.mltb_client import TgClient
 
 nsfw_keywords = [
     "porn",
@@ -382,7 +382,7 @@ user_settings_text = {
     "USER_DUMP": "FF",
     "LEECH_FILENAME_CAPTION": "FF",
     "LEECH_SPLIT_SIZE": f"Send Leech split size in bytes or use gb or mb. Example: 40000000 or 2.5gb or 1000mb. IS_PREMIUM_USER: {TgClient.IS_PREMIUM_USER}. Timeout: 60 sec",
-    "LEECH_DUMP_CHAT": """"Send leech destination ID/USERNAME/PM. 
+    "LEECH_DUMP_CHAT": """"Send leech destination ID/USERNAME/PM.
 * b:id/@username/pm (b: means leech by bot) (id or username of the chat or write pm means private message so bot will send the files in private to you) when you should use b:(leech by bot)? When your default settings is leech by user and you want to leech by bot for specific task.
 * u:id/@username(u: means leech by user) This incase OWNER added USER_STRING_SESSION.
 * h:id/@username(hybrid leech) h: to upload files by bot and user based on file size.

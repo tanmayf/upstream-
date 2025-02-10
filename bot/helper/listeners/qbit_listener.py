@@ -57,7 +57,8 @@ async def _stop_duplicate(tor):
     if task := await get_task_by_gid(tor.hash[:12]):
         if task.listener.stop_duplicate:
             task.listener.name = tor.content_path.rsplit("/", 1)[-1].rsplit(
-                ".!qB", 1
+                ".!qB",
+                1,
             )[0]
             msg, button = await stop_duplicate_check(task.listener)
             if msg:
@@ -164,7 +165,7 @@ async def _qb_listener():
                             )
                     elif state == "missingFiles":
                         await TorrentManager.qbittorrent.torrents.recheck(
-                            [tor_info.hash]
+                            [tor_info.hash],
                         )
                     elif state == "error":
                         await _on_download_error(

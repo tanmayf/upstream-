@@ -1,13 +1,13 @@
 from html import escape
 from urllib.parse import quote
 
-from bot import LOGGER, xnox_client
-from bot.helper.ext_utils.bot_utils import new_task, sync_to_async
+from bot import LOGGER
+from bot.core.torrent_manager import TorrentManager
+from bot.helper.ext_utils.bot_utils import new_task
 from bot.helper.ext_utils.status_utils import get_readable_file_size
 from bot.helper.ext_utils.telegraph_helper import telegraph
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.message_utils import edit_message, send_message
-from ..core.torrent_manager import TorrentManager
 
 PLUGINS = []
 TELEGRAPH_LIMIT = 300
@@ -43,14 +43,18 @@ async def initiate_search_tools():
 
 async def search(key, site, message):
     LOGGER.info(f"PLUGINS Searching: {key} from {site}")
-    search = await TorrentManager.qbittorrent.search.start(pattern=key, plugins=site, category="all")
+    search = await TorrentManager.qbittorrent.search.start(
+        pattern=key, plugins=site, category="all"
+    )
     search_id = search.id
     while True:
         result_status = await TorrentManager.qbittorrent.search.status(search_id)
         status = result_status[0].status
         if status != "Running":
             break
-    dict_search_results = await TorrentManager.qbittorrent.search.results(id=search_id, limit=TELEGRAPH_LIMIT)
+    dict_search_results = await TorrentManager.qbittorrent.search.results(
+        id=search_id, limit=TELEGRAPH_LIMIT
+    )
     search_results = dict_search_results.results
     total_results = dict_search_results.total
     if total_results == 0:

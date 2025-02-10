@@ -11,8 +11,8 @@ from aioqbt.client import create_client
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
-
 from sabnzbdapi import SabnzbdClient
+
 from web.nodes import extract_file_ids, make_tree
 
 getLogger("httpx").setLevel(WARNING)

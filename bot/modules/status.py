@@ -1,11 +1,17 @@
+from asyncio import iscoroutinefunction
 from time import time
 
 from psutil import cpu_percent, disk_usage, virtual_memory
 
-from bot import bot_start_time, intervals, DOWNLOAD_DIR, status_dict, task_dict, task_dict_lock
-from ..core.torrent_manager import TorrentManager
-from ..helper.ext_utils.bot_utils import new_task
-from ..core.jdownloader_booter import jdownloader
+from bot import (
+    DOWNLOAD_DIR,
+    bot_start_time,
+    intervals,
+    status_dict,
+    task_dict,
+    task_dict_lock,
+)
+from bot.helper.ext_utils.bot_utils import new_task
 from bot.helper.ext_utils.status_utils import (
     get_readable_file_size,
     get_readable_time,
@@ -18,7 +24,6 @@ from bot.helper.telegram_helper.message_utils import (
     send_status_message,
     update_status_message,
 )
-from asyncio import gather, iscoroutinefunction
 
 
 @new_task
