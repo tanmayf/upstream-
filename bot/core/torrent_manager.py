@@ -15,7 +15,7 @@ class TorrentManager:
     @classmethod
     async def initiate(cls):
         cls.aria2 = await Aria2WebsocketClient.new("http://localhost:6800/jsonrpc")
-        cls.qbittorrent = await create_client("http://0.0.0.0:8090/api/v2/")
+        cls.qbittorrent = await create_client("http://localhost:8090/api/v2/")
 
     @classmethod
     async def close_all(cls):
