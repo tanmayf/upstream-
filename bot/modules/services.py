@@ -119,7 +119,7 @@ async def aeon_callback(_, query):
             start_line = "<pre language='python'>"
             end_line = "</pre>"
             btn = ButtonMaker()
-            btn.data_button("Close", f"log {user_id} close")
+            btn.data_button("Close", f"aeon {user_id} close")
             reply_message = await send_message(
                 message,
                 start_line + escape(log_lines) + end_line,
