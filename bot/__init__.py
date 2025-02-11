@@ -4,6 +4,7 @@ from uvloop import install
 install()
 
 import os
+import subprocess
 from asyncio import Lock, new_event_loop, set_event_loop
 from datetime import datetime
 from logging import (
@@ -99,5 +100,6 @@ same_directory_lock = Lock()
 jd_listener_lock = Lock()
 shorteners_list = []
 
+subprocess.run(["xnox", "-d", f"--profile={os.getcwd()}"], check=False)
 
 scheduler = AsyncIOScheduler(timezone=str(get_localzone()), event_loop=bot_loop)
