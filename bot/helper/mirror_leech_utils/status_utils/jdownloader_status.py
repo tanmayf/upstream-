@@ -72,7 +72,7 @@ class JDownloaderStatus:
         self.listener = listener
         self._gid = gid
         self._info = {}
-        self.tool = "jdownloader"
+        self._tool = "jdownloader"
 
     async def _update(self):
         self._info = await get_download(self._gid, self._info)
@@ -116,7 +116,7 @@ class JDownloaderStatus:
         return self._gid
 
     def tool(self):
-        return self.tool
+        return self._tool
 
     async def cancel_task(self):
         self.listener.is_cancelled = True

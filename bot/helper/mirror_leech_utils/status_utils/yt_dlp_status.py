@@ -10,7 +10,7 @@ class YtDlpStatus:
         self._obj = obj
         self._gid = gid
         self.listener = listener
-        self.tool = "yt-dlp"
+        self._tool = "yt-dlp"
 
     def gid(self):
         return self._gid
@@ -45,7 +45,7 @@ class YtDlpStatus:
             return "-"
 
     def tool(self):
-        return self.tool
+        return self._tool
 
     def task(self):
         return self._obj

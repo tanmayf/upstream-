@@ -16,7 +16,7 @@ class SevenZStatus:
         self._gid = gid
         self._start_time = time()
         self._cstatus = status
-        self.tool = "7z"
+        self._tool = "7z"
 
     def gid(self):
         return self._gid
@@ -57,7 +57,7 @@ class SevenZStatus:
         return self
 
     def tool(self):
-        return self.tool
+        return self._tool
 
     async def cancel_task(self):
         LOGGER.info(f"Cancelling {self._cstatus}: {self.listener.name}")

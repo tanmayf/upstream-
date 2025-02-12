@@ -26,7 +26,7 @@ class Aria2Status:
         self.queued = queued
         self.start_time = 0
         self.seeding = seeding
-        self.tool = "aria2"
+        self._tool = "aria2"
 
     async def update(self):
         self._download = await get_download(self._gid, self._download)
@@ -110,7 +110,7 @@ class Aria2Status:
         return self._gid
 
     def tool(self):
-        return self.tool
+        return self._tool
 
     async def cancel_task(self):
         self.listener.is_cancelled = True

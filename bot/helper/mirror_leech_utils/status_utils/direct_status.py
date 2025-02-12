@@ -10,7 +10,7 @@ class DirectStatus:
         self._gid = gid
         self._obj = obj
         self.listener = listener
-        self.tool = "aria2"
+        self._tool = "aria2"
 
     def gid(self):
         return self._gid
@@ -43,7 +43,7 @@ class DirectStatus:
             return "-"
 
     def tool(self):
-        return self.tool
+        return self._tool
 
     def status(self):
         if (

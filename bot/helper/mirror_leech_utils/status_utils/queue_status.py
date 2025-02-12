@@ -8,7 +8,7 @@ class QueueStatus:
         self._size = self.listener.size
         self._gid = gid
         self._status = status
-        self.tool = "system"
+        self._tool = "system"
 
     def gid(self):
         return self._gid
@@ -40,7 +40,7 @@ class QueueStatus:
         return self
 
     def tool(self):
-        return self.tool
+        return self._tool
 
     async def cancel_task(self):
         self.listener.is_cancelled = True
