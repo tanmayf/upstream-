@@ -30,6 +30,7 @@ from bot.helper.telegram_helper.message_utils import (
 )
 
 handler_dict = {}
+no_thumb = "https://graph.org/file/73ae908d18c6b38038071.jpg"
 
 leech_options = [
     "THUMBNAIL",
@@ -53,6 +54,7 @@ async def get_user_settings(from_user, stype="main"):
     token_pickle = f"tokens/{user_id}.pickle"
     thumbpath = f"Thumbnails/{user_id}.jpg"
     user_dict = user_data.get(user_id, {})
+    thumbnail = thumbpath if await aiopath.exists(thumbpath) else no_thumb
 
     if stype == "leech":
         buttons.data_button("Thumbnail", f"userset {user_id} menu THUMBNAIL")
@@ -302,7 +304,7 @@ FFMPEG Commands is <code>{ffc}</code>
 Metadata is <code>{mdt}</code>
 Watermark text is <code>{wmt}</code>"""
 
-    return text, buttons.build_menu(2), thumbpath
+    return text, buttons.build_menu(2), thumbnail
 
 
 async def update_user_settings(query, stype="main"):
