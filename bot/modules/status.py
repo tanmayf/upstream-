@@ -1,4 +1,3 @@
-from asyncio import iscoroutinefunction
 from time import time
 
 from psutil import cpu_percent, disk_usage, virtual_memory
