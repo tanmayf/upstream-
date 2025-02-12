@@ -46,15 +46,15 @@ async def start(client, message):
                 "This token is not yours!\n\nKindly generate your own.",
             )
         data = user_data[userid]
-        if "token" not in data or data["token"] != input_token:
+        if "TOKEN" not in data or data["TOKEN"] != input_token:
             return await send_message(
                 message,
                 "<b>This token has already been used!</b>\n\nPlease get a new one.",
             )
         token = str(uuid4())
         token_time = time()
-        data["token"] = token
-        data["time"] = token_time
+        data["TOKEN"] = token
+        data["TIME"] = token_time
         user_data[userid].update(data)
         await database.update_user_tdata(userid, token, token_time)
         msg = "Your token has been successfully generated!\n\n"
