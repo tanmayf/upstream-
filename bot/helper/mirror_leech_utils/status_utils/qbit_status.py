@@ -24,7 +24,7 @@ class QbittorrentStatus:
         self.seeding = seeding
         self.listener = listener
         self._info = None
-        self._tool = "qbittorrent"
+        self.tool = "qbittorrent"
 
     async def update(self):
         self._info = await get_download(f"{self.listener.mid}", self._info)
@@ -90,9 +90,6 @@ class QbittorrentStatus:
 
     def hash(self):
         return self._info.hash
-
-    def tool(self):
-        return self._tool
 
     async def cancel_task(self):
         self.listener.is_cancelled = True

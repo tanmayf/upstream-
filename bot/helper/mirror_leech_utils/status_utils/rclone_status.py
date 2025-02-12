@@ -7,7 +7,7 @@ class RcloneStatus:
         self._gid = gid
         self._status = status
         self.listener = listener
-        self._tool = "rclone"
+        self.tool = "rclone"
 
     def gid(self):
         return self._gid
@@ -36,9 +36,6 @@ class RcloneStatus:
 
     def processed_bytes(self):
         return self._obj.transferred_size
-
-    def tool(self):
-        return self._tool
 
     def task(self):
         return self._obj

@@ -1,3 +1,4 @@
+from asyncio import iscoroutinefunction
 from time import time
 
 from psutil import cpu_percent, disk_usage, virtual_memory
@@ -51,6 +52,24 @@ async def task_status(_, message):
                 del intervals["status"][sid]
         await send_status_message(message, user_id)
         await delete_message(message)
+
+
+async def get_download_status(download):
+    tool = download.tool
+    if tool in [
+        "telegram",
+        "yt-dlp",
+        "rclone",
+        "gDriveApi",
+    ]:
+        speed = download.speed()
+    else:
+        speed = 0
+    return (
+        await download.status()
+        if iscoroutinefunction(download.status)
+        else download.status()
+    ), speed
 
 
 @new_task

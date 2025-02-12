@@ -10,7 +10,7 @@ class YtDlpStatus:
         self._obj = obj
         self._gid = gid
         self.listener = listener
-        self._tool = "yt-dlp"
+        self.tool = "yt-dlp"
 
     def gid(self):
         return self._gid
@@ -43,9 +43,6 @@ class YtDlpStatus:
             return get_readable_time(seconds)
         except Exception:
             return "-"
-
-    def tool(self):
-        return self._tool
 
     def task(self):
         return self._obj

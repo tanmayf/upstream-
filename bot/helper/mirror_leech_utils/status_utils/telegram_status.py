@@ -12,7 +12,7 @@ class TelegramStatus:
         self._size = self.listener.size
         self._gid = gid
         self._status = status
-        self._tool = "telegram"
+        self.tool = "telegram"
 
     def processed_bytes(self):
         return get_readable_file_size(self._obj.processed_bytes)
@@ -47,9 +47,6 @@ class TelegramStatus:
 
     def gid(self):
         return self._gid
-
-    def tool(self):
-        return self._tool
 
     def task(self):
         return self._obj

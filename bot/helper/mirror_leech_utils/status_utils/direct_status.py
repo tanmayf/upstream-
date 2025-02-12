@@ -10,7 +10,7 @@ class DirectStatus:
         self._gid = gid
         self._obj = obj
         self.listener = listener
-        self._tool = "aria2"
+        self.tool = "aria2"
 
     def gid(self):
         return self._gid
@@ -41,9 +41,6 @@ class DirectStatus:
             return get_readable_time(seconds)
         except Exception:
             return "-"
-
-    def tool(self):
-        return self._tool
 
     def status(self):
         if (

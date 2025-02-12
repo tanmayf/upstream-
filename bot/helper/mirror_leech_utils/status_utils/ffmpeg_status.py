@@ -14,7 +14,7 @@ class FFmpegStatus:
         self._obj = obj
         self._gid = gid
         self._cstatus = status
-        self._tool = "ffmpeg"
+        self.tool = "ffmpeg"
 
     def speed(self):
         return f"{get_readable_file_size(self._obj.speed_raw)}/s"
@@ -54,9 +54,6 @@ class FFmpegStatus:
 
     def task(self):
         return self
-
-    def tool(self):
-        return self._tool
 
     async def cancel_task(self):
         LOGGER.info(f"Cancelling {self._cstatus}: {self.listener.name}")
