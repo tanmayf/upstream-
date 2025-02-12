@@ -39,6 +39,9 @@ class QueueStatus:
     def task(self):
         return self
 
+    def tool(self):
+        return self.tool
+
     async def cancel_task(self):
         self.listener.is_cancelled = True
         LOGGER.info(f"Cancelling Queue{self._status}: {self.listener.name}")

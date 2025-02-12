@@ -55,6 +55,9 @@ class FFmpegStatus:
     def task(self):
         return self
 
+    def tool(self):
+        return self.tool
+
     async def cancel_task(self):
         LOGGER.info(f"Cancelling {self._cstatus}: {self.listener.name}")
         self.listener.is_cancelled = True

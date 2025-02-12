@@ -44,5 +44,8 @@ class YtDlpStatus:
         except Exception:
             return "-"
 
+    def tool(self):
+        return self.tool
+
     def task(self):
         return self._obj

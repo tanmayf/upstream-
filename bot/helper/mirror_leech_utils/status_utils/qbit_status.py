@@ -91,6 +91,9 @@ class QbittorrentStatus:
     def hash(self):
         return self._info.hash
 
+    def tool(self):
+        return self.tool
+
     async def cancel_task(self):
         self.listener.is_cancelled = True
         await self.update()

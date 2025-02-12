@@ -48,5 +48,8 @@ class TelegramStatus:
     def gid(self):
         return self._gid
 
+    def tool(self):
+        return self.tool
+
     def task(self):
         return self._obj

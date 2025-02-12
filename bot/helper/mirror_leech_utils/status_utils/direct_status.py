@@ -42,6 +42,9 @@ class DirectStatus:
         except Exception:
             return "-"
 
+    def tool(self):
+        return self.tool
+
     def status(self):
         if (
             self._obj.download_task

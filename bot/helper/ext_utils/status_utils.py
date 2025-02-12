@@ -249,6 +249,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
             msg += f" | <b>Time: </b>{task.seeding_time()}"
         else:
             msg += f"\n<b>Size: </b>{task.size()}"
+        msg += f"\n<b>tool:</b> {task.tool()}"
         msg += f"\n/stop_{task.gid()[:8]}\n\n"
 
     if len(msg) == 0:

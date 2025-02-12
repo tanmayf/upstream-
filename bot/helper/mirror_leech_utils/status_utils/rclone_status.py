@@ -37,5 +37,8 @@ class RcloneStatus:
     def processed_bytes(self):
         return self._obj.transferred_size
 
+    def tool(self):
+        return self.tool
+
     def task(self):
         return self._obj

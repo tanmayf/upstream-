@@ -109,6 +109,9 @@ class Aria2Status:
     def gid(self):
         return self._gid
 
+    def tool(self):
+        return self.tool
+
     async def cancel_task(self):
         self.listener.is_cancelled = True
         await self.update()

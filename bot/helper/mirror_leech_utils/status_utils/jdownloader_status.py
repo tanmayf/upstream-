@@ -115,6 +115,9 @@ class JDownloaderStatus:
     def gid(self):
         return self._gid
 
+    def tool(self):
+        return self.tool
+
     async def cancel_task(self):
         self.listener.is_cancelled = True
         LOGGER.info(f"Cancelling Download: {self.name()}")
