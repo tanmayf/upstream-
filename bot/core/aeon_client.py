@@ -60,12 +60,12 @@ class TgClient:
     @classmethod
     async def stop(cls):
         if cls.bot:
-            # await cls.bot.stop()
+            await cls.bot.stop()
             cls.bot = None
             LOGGER.info("Bot client stopped.")
 
         if cls.user:
-            # await cls.user.stop()
+            await cls.user.stop()
             cls.user = None
             LOGGER.info("User client stopped.")
 
