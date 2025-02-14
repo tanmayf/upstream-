@@ -70,17 +70,6 @@ class TgClient:
         cls.IS_PREMIUM_USER = False
         cls.MAX_SPLIT_SIZE = 2097152000
 
-"""
-    @classmethod
-    async def stop(cls):
-        async with cls._lock:
-            if cls.bot:
-                await cls.bot.stop()
-            if cls.user:
-                await cls.user.stop()
-            LOGGER.info("Client stopped")
-"""
-
     @classmethod
     async def reload(cls):
         async with cls._lock:
