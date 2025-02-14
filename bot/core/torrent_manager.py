@@ -27,7 +27,7 @@ class TorrentManager:
             await cls.aria2.forceRemove(download.get("gid", ""))
         else:
             await cls.aria2.removeDownloadResult(download.get("gid", ""))
-    
+
     @classmethod
     async def remove_all(cls):
         await cls.pause_all()

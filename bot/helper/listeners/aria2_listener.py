@@ -55,7 +55,6 @@ async def _on_download_started(api, data):
         if msg:
             await TorrentManager.aria2_remove(download)
             await task.listener.on_download_error(msg, button)
-            
 
 
 async def _on_download_complete(api, data):

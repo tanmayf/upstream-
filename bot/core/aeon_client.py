@@ -1,7 +1,9 @@
 from asyncio import Lock
+
 from pyrogram import Client, enums
 
 from bot import LOGGER
+
 from .config_manager import Config
 
 
@@ -61,12 +63,12 @@ class TgClient:
             # await cls.bot.stop()
             cls.bot = None
             LOGGER.info("Bot client stopped.")
-        
+
         if cls.user:
             # await cls.user.stop()
             cls.user = None
             LOGGER.info("User client stopped.")
-        
+
         cls.IS_PREMIUM_USER = False
         cls.MAX_SPLIT_SIZE = 2097152000
 
