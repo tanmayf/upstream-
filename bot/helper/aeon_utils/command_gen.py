@@ -1,5 +1,4 @@
 import json
-import os
 from asyncio import create_subprocess_exec
 from asyncio.subprocess import PIPE
 
