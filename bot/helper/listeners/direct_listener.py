@@ -17,18 +17,12 @@ class DirectListener:
     @property
     def processed_bytes(self):
         if self.download_task:
-            return self._proc_bytes + int(
-                self.download_task.get("completedLength", "0"),
-            )
+            return self._proc_bytes + int(self.download_task.get("completedLength", "0"))
         return self._proc_bytes
 
     @property
     def speed(self):
-        return (
-            int(self.download_task.get("downloadSpeed", "0"))
-            if self.download_task
-            else 0
-        )
+        return int(self.download_task.get("downloadSpeed", "0")) if self.download_task else 0
 
     async def download(self, contents):
         self.is_downloading = True
@@ -43,42 +37,36 @@ class DirectListener:
             self._a2c_opt["out"] = filename
             try:
                 gid = await TorrentManager.aria2.addUri(
-                    uris=[content["url"]],
-                    options=self._a2c_opt,
-                    position=0,
+                    uris=[content["url"]], options=self._a2c_opt, position=0
                 )
-                self.download_task = await TorrentManager.aria2.tellStatus(gid)
             except Exception as e:
                 self._failed += 1
                 LOGGER.error(f"Unable to download {filename} due to: {e}")
                 continue
+            self.download_task = await TorrentManager.aria2.tellStatus(gid)
             while True:
                 if self.listener.is_cancelled:
                     if self.download_task:
-                        await TorrentManager.aria2.forceRemove(gid)
+                        await TorrentManager.aria2_remove(self.download_task)
                     break
                 self.download_task = await TorrentManager.aria2.tellStatus(gid)
                 if error_message := self.download_task.get("errorMessage"):
                     self._failed += 1
                     LOGGER.error(
-                        f"Unable to download {aria2_name(self.download_task)} due to: {error_message}",
+                        f"Unable to download {aria2_name(self.download_task)} due to: {error_message}"
                     )
-                    await TorrentManager.aria2.forceRemove(gid)
+                    await TorrentManager.aria2_remove(self.download_task)
                     break
-                if self.download_task.get("status", "") == "complete":
-                    self._proc_bytes += int(
-                        self.download_task.get("totalLength", "0"),
-                    )
-                    await TorrentManager.aria2.forceRemove(gid)
+                elif self.download_task.get("status", "") == "complete":
+                    self._proc_bytes += int(self.download_task.get("totalLength", "0"))
+                    await TorrentManager.aria2_remove(self.download_task)
                     break
                 await sleep(1)
             self.download_task = None
         if self.listener.is_cancelled:
             return
         if self._failed == len(contents):
-            await self.listener.on_download_error(
-                "All files are failed to download!",
-            )
+            await self.listener.on_download_error("All files are failed to download!")
             return
         await self.listener.on_download_complete()
         return
@@ -88,4 +76,4 @@ class DirectListener:
         LOGGER.info(f"Cancelling Download: {self.listener.name}")
         await self.listener.on_download_error("Download Cancelled by User!")
         if self.download_task:
-            await TorrentManager.aria2.forceRemove(self.download_task.get("gid"))
+            await TorrentManager.aria2_remove(self.download_task)
