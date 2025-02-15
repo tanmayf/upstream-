@@ -85,7 +85,7 @@ def get_video_quality(height):
             8640: "8640p",
         }
         for threshold, quality in sorted(quality_map.items()):
-            if height and int(height) <= threshold:
+            if int(height) <= threshold:
                 return quality
     return "Unknown"
 
