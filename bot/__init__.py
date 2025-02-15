@@ -101,4 +101,4 @@ shorteners_list = []
 
 subprocess.run(["xnox", "-d", f"--profile={os.getcwd()}"], check=False)
 
-scheduler = AsyncIOScheduler(timezone=str(event_loop=bot_loop)
+scheduler = AsyncIOScheduler(timezone=str(event_loop=bot_loop))
