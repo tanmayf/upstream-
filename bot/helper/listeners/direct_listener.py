@@ -1,6 +1,8 @@
 from asyncio import sleep
+
 from aioaria2.exceptions import Aria2rpcException
 from aiohttp.client_exceptions import ClientError
+
 from bot import LOGGER
 from bot.core.torrent_manager import TorrentManager, aria2_name
 

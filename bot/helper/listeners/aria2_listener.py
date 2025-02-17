@@ -1,10 +1,11 @@
 import contextlib
 from asyncio import sleep
 from time import time
+
 from aioaria2.exceptions import Aria2rpcException
-from aiohttp.client_exceptions import ClientError
 from aiofiles.os import path as aiopath
 from aiofiles.os import remove
+from aiohttp.client_exceptions import ClientError
 
 from bot import LOGGER, intervals, task_dict, task_dict_lock
 from bot.core.config_manager import Config
