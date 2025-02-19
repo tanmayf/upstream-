@@ -1829,12 +1829,12 @@ def berkasdrive(url):
 
 
 def swisstransfer(link):
-    match = match(r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link)
-    if not match:
+    matched_link = match(r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link)
+    if not matched_link:
         print("Invalid SwissTransfer link format.")
         return None
 
-    transfer_id, password = match.groups()
+    transfer_id, password = matched_link.groups()
     password = password or ""
 
     def encode_password(password):
