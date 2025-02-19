@@ -77,7 +77,7 @@ def direct_link_generator(link):
         return mp4upload(link)
     if "berkasdrive.com" in domain:
         return berkasdrive(link)
-    if "swisstransfer" in domain:
+    if "www.swisstransfer.com" in domain:
         return swisstransfer(link)
     if any(x in domain for x in ["akmfiles.com", "akmfls.xyz"]):
         return akmfiles(link)
