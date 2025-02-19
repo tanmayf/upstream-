@@ -124,7 +124,7 @@ class GoogleDriveDownload(GoogleDriveHelper):
         if self.listener.is_cancelled:
             return None
         fh = FileIO(f"{path}/{filename}", "wb")
-        downloader = MediaIoBaseDownload(fh, request, chunksize=50 * 1024 * 1024)
+        downloader = MediaIoBaseDownload(fh, request, chunksize=100 * 1024 * 1024)
         done = False
         retries = 0
         while not done:

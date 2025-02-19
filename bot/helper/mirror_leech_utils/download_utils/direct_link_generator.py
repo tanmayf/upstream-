@@ -1,5 +1,5 @@
 # ruff: noqa
-from base64 import b64decode
+from base64 import b64decode, b64encode
 from hashlib import sha256
 from http.cookiejar import MozillaCookieJar
 from json import loads
@@ -77,6 +77,8 @@ def direct_link_generator(link):
         return mp4upload(link)
     if "berkasdrive.com" in domain:
         return berkasdrive(link)
+    if "swisstransfer" in domain:
+        return swisstransfer(link)
     if any(x in domain for x in ["akmfiles.com", "akmfls.xyz"]):
         return akmfiles(link)
     if any(
@@ -1824,3 +1826,86 @@ def berkasdrive(url):
     if link := html.xpath("//script")[0].text.split('"')[1]:
         return b64decode(link).decode("utf-8")
     raise DirectDownloadLinkException("ERROR: File Not Found!")
+
+
+def swisstransfer(link):  
+    match = match(r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link)  
+    if not match:  
+        print("Invalid SwissTransfer link format.")  
+        return None  
+  
+    transfer_id, password = match.groups()  
+    password = password or ""  
+  
+    def encode_password(password):  
+        return b64encode(password.encode("utf-8")).decode("utf-8") if password else ""  
+  
+    def getfile(transfer_id, password):  
+        url = f"https://www.swisstransfer.com/api/links/{transfer_id}"  
+        headers = {  
+            "User-Agent": "Mozilla/5.0",  
+            "Authorization": encode_password(password),  
+        }  
+        response = get(url, headers=headers)  
+  
+        if response.status_code == 200:  
+            try:  
+                return response.json(), headers 
+            except ValueError:  
+                print("Error: Invalid JSON response from getfile()")  
+        print(f"Error fetching file details: {response.status_code}")  
+        return None, headers  
+  
+    def gettoken(password, containerUUID, fileUUID):  
+        url = "https://www.swisstransfer.com/api/generateDownloadToken"  
+        headers = {  
+            "User-Agent": "Mozilla/5.0",  
+            "Content-Type": "application/json",  
+        }  
+        body = {"password": password, "containerUUID": containerUUID, "fileUUID": fileUUID}  
+  
+        response = post(url, headers=headers, json=body)  
+  
+        if response.status_code == 200:  
+            return response.text.strip().replace('"', '')   
+        print(f"Error generating download token: {response.status_code}, {response.text}")  
+        return None  
+  
+    data, headers = getfile(transfer_id, password)  
+    if not data:  
+        return None  
+  
+    try:  
+        container_uuid = data["data"]["containerUUID"]  
+        download_host = data["data"]["downloadHost"]    
+        files = data["data"]["container"]["files"]  
+        folder_name = data["data"]["container"]["message"] or "Unknown_Folder"
+    except (KeyError, IndexError, TypeError) as e:  
+        print(f"Error parsing file details: {e}")  
+        return None  
+  
+    total_size = sum(file["fileSizeInBytes"] for file in files) 
+  
+    contents = []  
+    for file in files:  
+        file_uuid = file["UUID"]  
+        file_name = file["fileName"]  
+        file_size = file["fileSizeInBytes"]  
+  
+        token = gettoken(password, container_uuid, file_uuid)  
+        if not token:  
+            continue  
+  
+        download_url = f"https://{download_host}/api/download/{transfer_id}/{file_uuid}?token={token}"  
+        contents.append({  
+            "filename": file_name,  
+            "path": folder_name,
+            "url": download_url  
+        })  
+  
+    return {  
+        "contents": contents,  
+        "title": folder_name,  
+        "total_size": total_size,  
+        "header": headers
+    }  
