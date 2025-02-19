@@ -1833,8 +1833,7 @@ def swisstransfer(link):
         r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link
     )
     if not matched_link:
-        print("Invalid SwissTransfer link format.")
-        return None
+        raise DirectDownloadLinkException(f"Invalid SwissTransfer link format ERROR: {link}")
 
     transfer_id, password = matched_link.groups()
     password = password or ""
@@ -1846,24 +1845,19 @@ def swisstransfer(link):
 
     def getfile(transfer_id, password):
         url = f"https://www.swisstransfer.com/api/links/{transfer_id}"
-        if password:
-            headers = {
-                "User-Agent": "Mozilla/5.0",
-                "Authorization": encode_password(password),
-            }
-        else:
-            headers = {
-                "User-Agent": "Mozilla/5.0",
-                "Content-Type": "application/json",
-            }
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Authorization": encode_password(password) if password else "",
+            "Content-Type": "application/json" if not password else ""
+        }
         response = get(url, headers=headers)
 
         if response.status_code == 200:
             try:
                 return response.json(), headers
             except ValueError:
-                return None, None
-        return None, headers
+                raise DirectDownloadLinkException(f"ERROR: Error parsing JSON response {response.text}")
+        raise DirectDownloadLinkException(f"ERROR: Error fetching file details {response.status_code}, {response.text}")
 
     def gettoken(password, containerUUID, fileUUID):
         url = "https://www.swisstransfer.com/api/generateDownloadToken"
@@ -1882,9 +1876,8 @@ def swisstransfer(link):
         if response.status_code == 200:
             return response.text.strip().replace('"', "")
         raise DirectDownloadLinkException(
-            f"Error generating download token: {response.status_code}, {response.text}"
+            f"ERROR: Error generating download token {response.status_code}, {response.text}"
         )
-        return None
 
     data, headers = getfile(transfer_id, password)
     if not data:
@@ -1896,9 +1889,16 @@ def swisstransfer(link):
         files = data["data"]["container"]["files"]
         folder_name = data["data"]["container"]["message"] or "unknown"
     except (KeyError, IndexError, TypeError) as e:
-        raise DirectDownloadLinkException(f"Error parsing file details: {e}")
+        raise DirectDownloadLinkException(f"ERROR: Error parsing file details {e}")
 
     total_size = sum(file["fileSizeInBytes"] for file in files)
+
+    if len(files) == 1:  # Only one download link
+        file = files[0]
+        file_uuid = file["UUID"]
+        token = gettoken(password, container_uuid, file_uuid)
+        download_url = f"https://{download_host}/api/download/{transfer_id}/{file_uuid}?token={token}"
+        return download_url, "User-Agent:Mozilla/5.0"
 
     contents = []
     for file in files:
