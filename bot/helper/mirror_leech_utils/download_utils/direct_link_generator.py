@@ -1830,11 +1830,11 @@ def berkasdrive(url):
 
 def swisstransfer(link):
     matched_link = match(
-        r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link
+        r"https://www\.swisstransfer\.com/d/([\w-]+)(?:\:\:(\w+))?", link
     )
     if not matched_link:
         raise DirectDownloadLinkException(
-            f"Invalid SwissTransfer link format ERROR: {link}"
+            f"ERROR: Invalid SwissTransfer link format {link}"
         )
 
     transfer_id, password = matched_link.groups()
