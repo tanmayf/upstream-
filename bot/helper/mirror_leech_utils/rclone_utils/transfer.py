@@ -198,7 +198,7 @@ class RcloneTransferHelper:
                     "1",
                     "--transfers",
                     "1",
-                )
+                ),
             )
 
         await self._start_download(cmd, remote_type)
@@ -419,7 +419,7 @@ class RcloneTransferHelper:
                     "1",
                     "--transfers",
                     "3",
-                )
+                ),
             )
 
         self._proc = await create_subprocess_exec(*cmd, stdout=PIPE, stderr=PIPE)
