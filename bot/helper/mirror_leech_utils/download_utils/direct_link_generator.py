@@ -1829,7 +1829,9 @@ def berkasdrive(url):
 
 
 def swisstransfer(link):
-    matched_link = match(r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link)
+    matched_link = match(
+        r"https://www\.swisstransfer\.com/d/([\w-]+)(?::(\w+))?", link
+    )
     if not matched_link:
         print("Invalid SwissTransfer link format.")
         return None
