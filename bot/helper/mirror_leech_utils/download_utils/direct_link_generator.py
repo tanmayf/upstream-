@@ -1911,9 +1911,7 @@ def swisstransfer(link):
             continue
 
         download_url = f"https://{download_host}/api/download/{transfer_id}/{file_uuid}?token={token}"
-        contents.append(
-            {"filename": file_name, "path": "", "url": download_url}
-        )
+        contents.append({"filename": file_name, "path": "", "url": download_url})
 
     return {
         "contents": contents,
