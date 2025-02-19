@@ -1846,7 +1846,7 @@ def swisstransfer(link):
 
     def getfile(transfer_id, password):
         url = f"https://www.swisstransfer.com/api/links/{transfer_id}"
-        if password: 
+        if password:
             headers = {
                 "User-Agent": "Mozilla/5.0",
                 "Authorization": encode_password(password),
@@ -1881,7 +1881,8 @@ def swisstransfer(link):
 
         if response.status_code == 200:
             return response.text.strip().replace('"', "")
-        raise DirectDownloadLinkException(f"Error generating download token: {response.status_code}, {response.text}"
+        raise DirectDownloadLinkException(
+            f"Error generating download token: {response.status_code}, {response.text}"
         )
         return None
 
