@@ -1846,18 +1846,23 @@ def swisstransfer(link):
 
     def getfile(transfer_id, password):
         url = f"https://www.swisstransfer.com/api/links/{transfer_id}"
-        headers = {
-            "User-Agent": "Mozilla/5.0",
-            "Authorization": encode_password(password),
-        }
+        if password: 
+            headers = {
+                "User-Agent": "Mozilla/5.0",
+                "Authorization": encode_password(password),
+            }
+        else:
+            headers = {
+                "User-Agent": "Mozilla/5.0",
+                "Content-Type": "application/json",
+            }
         response = get(url, headers=headers)
 
         if response.status_code == 200:
             try:
                 return response.json(), headers
             except ValueError:
-                print("Error: Invalid JSON response from getfile()")
-        print(f"Error fetching file details: {response.status_code}")
+                return None, None
         return None, headers
 
     def gettoken(password, containerUUID, fileUUID):
@@ -1876,8 +1881,7 @@ def swisstransfer(link):
 
         if response.status_code == 200:
             return response.text.strip().replace('"', "")
-        print(
-            f"Error generating download token: {response.status_code}, {response.text}"
+        raise DirectDownloadLinkException(f"Error generating download token: {response.status_code}, {response.text}"
         )
         return None
 
@@ -1889,10 +1893,9 @@ def swisstransfer(link):
         container_uuid = data["data"]["containerUUID"]
         download_host = data["data"]["downloadHost"]
         files = data["data"]["container"]["files"]
-        folder_name = data["data"]["container"]["message"] or ""
+        folder_name = data["data"]["container"]["message"] or "unknown"
     except (KeyError, IndexError, TypeError) as e:
-        print(f"Error parsing file details: {e}")
-        return None
+        raise DirectDownloadLinkException(f"Error parsing file details: {e}")
 
     total_size = sum(file["fileSizeInBytes"] for file in files)
 
