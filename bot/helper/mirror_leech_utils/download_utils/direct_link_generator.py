@@ -1917,5 +1917,5 @@ def swisstransfer(link):
         "contents": contents,
         "title": folder_name,
         "total_size": total_size,
-        "header": headers,
+        "header": "User-Agent:Mozilla/5.0",
     }
