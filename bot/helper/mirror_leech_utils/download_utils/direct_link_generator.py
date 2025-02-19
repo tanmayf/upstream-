@@ -1889,7 +1889,7 @@ def swisstransfer(link):
         container_uuid = data["data"]["containerUUID"]
         download_host = data["data"]["downloadHost"]
         files = data["data"]["container"]["files"]
-        folder_name = data["data"]["container"]["message"] or "Unknown_Folder"
+        folder_name = data["data"]["container"]["message"] or ""
     except (KeyError, IndexError, TypeError) as e:
         print(f"Error parsing file details: {e}")
         return None
