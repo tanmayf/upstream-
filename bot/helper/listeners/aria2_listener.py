@@ -1,5 +1,5 @@
 import contextlib
-from asyncio import sleep, TimeoutError
+from asyncio import TimeoutError, sleep
 from time import time
 
 from aiofiles.os import path as aiopath

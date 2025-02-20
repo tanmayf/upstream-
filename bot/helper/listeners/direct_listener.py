@@ -1,4 +1,4 @@
-from asyncio import sleep, TimeoutError
+from asyncio import TimeoutError, sleep
 
 from aiohttp.client_exceptions import ClientError
 

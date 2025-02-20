@@ -1,6 +1,6 @@
-from base64 import b64encode
 from asyncio import TimeoutError
-from aioaria2.exceptions import Aria2rpcException
+from base64 import b64encode
+
 from aiofiles import open as aiopen
 from aiofiles.os import path as aiopath
 from aiofiles.os import remove

@@ -610,7 +610,8 @@ class TaskConfig:
             ):
                 for file_ in files:
                     if is_first_archive_split(file_) or (
-                        is_archive(file_) and not file_.strip().lower().endswith(".rar")
+                        is_archive(file_)
+                        and not file_.strip().lower().endswith(".rar")
                     ):
                         f_path = ospath.join(dirpath, file_)
                         self.files_to_proceed.append(f_path)
@@ -937,8 +938,14 @@ class TaskConfig:
                 and vext
                 and not f_path.strip().lower().endswith(f".{vext}")
                 and (
-                    (vstatus == "+" and f_path.strip().lower().endswith(tuple(fvext)))
-                    or (vstatus == "-" and not f_path.strip().lower().endswith(tuple(fvext)))
+                    (
+                        vstatus == "+"
+                        and f_path.strip().lower().endswith(tuple(fvext))
+                    )
+                    or (
+                        vstatus == "-"
+                        and not f_path.strip().lower().endswith(tuple(fvext))
+                    )
                     or not vstatus
                 )
             ):
@@ -949,8 +956,14 @@ class TaskConfig:
                 and not is_video
                 and not f_path.strip().lower().endswith(f".{aext}")
                 and (
-                    (astatus == "+" and f_path.strip().lower().endswith(tuple(faext)))
-                    or (astatus == "-" and not f_path.strip().lower().endswith(tuple(faext)))
+                    (
+                        astatus == "+"
+                        and f_path.strip().lower().endswith(tuple(faext))
+                    )
+                    or (
+                        astatus == "-"
+                        and not f_path.strip().lower().endswith(tuple(faext))
+                    )
                     or not astatus
                 )
             ):

@@ -133,15 +133,15 @@ class DbManager:
                                                     "RCLONE_CONFIG",
                                                     "TOKEN_PICKLE",
                                                 ],
-                                            ]
+                                            ],
                                         },
-                                    }
-                                }
+                                    },
+                                },
                             },
-                        ]
-                    }
-                }
-            }
+                        ],
+                    },
+                },
+            },
         ]
         await self.db.users.update_one({"_id": user_id}, pipeline, upsert=True)
 
@@ -152,11 +152,15 @@ class DbManager:
             async with aiopen(path, "rb+") as doc:
                 doc_bin = await doc.read()
             await self.db.users.update_one(
-                {"_id": user_id}, {"$set": {key: doc_bin}}, upsert=True
+                {"_id": user_id},
+                {"$set": {key: doc_bin}},
+                upsert=True,
             )
         else:
             await self.db.users.update_one(
-                {"_id": user_id}, {"$unset": {key: ""}}, upsert=True
+                {"_id": user_id},
+                {"$unset": {key: ""}},
+                upsert=True,
             )
 
     async def rss_update_all(self):
