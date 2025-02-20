@@ -1899,7 +1899,7 @@ def swisstransfer(link):
 
     total_size = sum(file["fileSizeInBytes"] for file in files)
 
-    if len(files) == 1:  # Only one download link
+    if len(files) == 1:
         file = files[0]
         file_uuid = file["UUID"]
         token = gettoken(password, container_uuid, file_uuid)
