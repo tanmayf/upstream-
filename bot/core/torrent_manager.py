@@ -1,17 +1,17 @@
 import contextlib
-from asyncio import gather, TimeoutError
-from aiohttp import ClientError
-from pathlib import Path
+from asyncio import TimeoutError, gather
 from inspect import iscoroutinefunction
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_exponential,
-    retry_if_exception_type,
-)
+from pathlib import Path
 
 from aioaria2 import Aria2WebsocketClient
+from aiohttp import ClientError
 from aioqbt.client import create_client
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from bot import LOGGER, aria2_options
 
@@ -27,12 +27,13 @@ def wrap_with_retry(obj, max_retries=3):
                 stop=stop_after_attempt(max_retries),
                 wait=wait_exponential(multiplier=1, min=1, max=5),
                 retry=retry_if_exception_type(
-                    (ClientError, TimeoutError, RuntimeError)
+                    (ClientError, TimeoutError, RuntimeError),
                 ),
             )
             wrapped = retry_policy(attr)
             setattr(obj, attr_name, wrapped)
     return obj
+
 
 class TorrentManager:
     aria2 = None
