@@ -12,9 +12,6 @@ from bot.helper.telegram_helper.message_utils import edit_message, send_message
 
 @new_task
 async def hydra_search(client, message):
-    """
-    Handler for the search command that initiates an NZB search
-    """
     key = message.text.split()
 
     if len(key) == 1:
@@ -45,13 +42,10 @@ async def hydra_search(client, message):
         )
     except Exception as e:
         LOGGER.error(f"Error in hydra_search: {e!s}")
-        await edit_message(message, "Something went wrong\nUse /shell cat rlog.txt")
+        await edit_message(message, "Something went wrong.")
 
 
 async def search_nzbhydra(query, limit=50):
-    """
-    Performs the actual search query to NZBHydra
-    """
     search_url = f"{Config.HYDRA_IP}/api"
     params = {
         "apikey": Config.HYDRA_API_KEY,
@@ -90,10 +84,7 @@ async def search_nzbhydra(query, limit=50):
 
 
 async def create_telegraph_page(query, items):
-    """
-    Creates a Telegraph page with the search results
-    """
-    content = "<b>🔍 Search Results:</b><br><br>"
+    content = "<b>Search Results:</b><br><br>"
     sorted_items = sorted(
         [
             (
@@ -119,35 +110,15 @@ async def create_telegraph_page(query, items):
         )
         size = format_size(size_bytes)
 
-        # Add category-based icons
-        title_lower = title.lower()
-        if any(
-            word in title_lower
-            for word in ["movie", "movies", "1080p", "720p", "2160p", "uhd"]
-        ):
-            icon = "🎬"
-        elif any(
-            word in title_lower for word in ["episode", "season", "tv", "show"]
-        ):
-            icon = "📺"
-        elif any(word in title_lower for word in ["mp3", "flac", "music", "album"]):
-            icon = "🎵"
-        elif any(word in title_lower for word in ["ebook", "book", "pdf", "epub"]):
-            icon = "📚"
-        elif any(word in title_lower for word in ["game", "ps4", "xbox"]):
-            icon = "🎮"
-        else:
-            icon = "📁"
-
         content += (
-            f"{idx}. {icon} <b>Title:</b> {title}<br>"
-            f"<b><a href='{download_url}'>Download URL</a></b> <a href='http://t.me/share/url?url={download_url}'>Share Download URL</a><br>"
+            f"{idx}. {title}<br>"
+            f"<b><a href='{download_url}'>Download URL</a> | <a href='http://t.me/share/url?url={download_url}'>Share Download URL</a></b><br>"
             f"<b>Size:</b> {size}<br>"
             f"━━━━━━━━━━━━━━━━━━━━━━<br><br>"
         )
 
     response = await telegraph.create_page(
-        title=f"🔍 Search Results for '{query}'",
+        title=f"Search Results for '{query}'",
         content=content,
     )
     LOGGER.info(f"Telegraph page created for search: {query}")
@@ -155,9 +126,6 @@ async def create_telegraph_page(query, items):
 
 
 def format_size(size_bytes):
-    """
-    Formats byte size to human readable format
-    """
     size_bytes = float(size_bytes)
     for unit in ["B", "KB", "MB", "GB", "TB"]:
         if size_bytes < 1024:
