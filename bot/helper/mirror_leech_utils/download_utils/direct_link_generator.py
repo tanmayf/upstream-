@@ -299,30 +299,37 @@ def devuploads(url):
     session = Session()
     res = session.get(url)
     html = HTML(res.text)
-    if not html.xpath('//input[@name]'):
+    if not html.xpath("//input[@name]"):
         raise DirectDownloadLinkException("ERROR: Unable to find link data")
-    data = {i.get('name'): i.get('value') for i in html.xpath('//input[@name]')}
+    data = {i.get("name"): i.get("value") for i in html.xpath("//input[@name]")}
     res = session.post("https://gujjukhabar.in/", data=data)
     html = HTML(res.text)
-    if not html.xpath('//input[@name]'):
+    if not html.xpath("//input[@name]"):
         raise DirectDownloadLinkException("ERROR: Unable to find link data")
-    data = {i.get('name'): i.get('value') for i in html.xpath('//input[@name]')}
-    resp = session.get("https://du2.devuploads.com/dlhash.php", headers={
-        "Origin": "https://gujjukhabar.in",
-        "Referer": "https://gujjukhabar.in/"
-    })
+    data = {i.get("name"): i.get("value") for i in html.xpath("//input[@name]")}
+    resp = session.get(
+        "https://du2.devuploads.com/dlhash.php",
+        headers={
+            "Origin": "https://gujjukhabar.in",
+            "Referer": "https://gujjukhabar.in/",
+        },
+    )
     if not resp.text:
         raise DirectDownloadLinkException("ERROR: Unable to find ipp value")
-    data['ipp'] = resp.text.strip()
-    if not data.get('rand'):
+    data["ipp"] = resp.text.strip()
+    if not data.get("rand"):
         raise DirectDownloadLinkException("ERROR: Unable to find rand value")
-    randpost = session.post("https://devuploads.com/token/token.php", data={'rand': data['rand'], 'msg': ''}, headers={
-        "Origin": "https://gujjukhabar.in",
-        "Referer": "https://gujjukhabar.in/"
-    })
+    randpost = session.post(
+        "https://devuploads.com/token/token.php",
+        data={"rand": data["rand"], "msg": ""},
+        headers={
+            "Origin": "https://gujjukhabar.in",
+            "Referer": "https://gujjukhabar.in/",
+        },
+    )
     if not randpost:
         raise DirectDownloadLinkException("ERROR: Unable to find xd value")
-    data['xd'] = randpost.text.strip()
+    data["xd"] = randpost.text.strip()
     res = session.post(url, data=data)
     html = HTML(res.text)
     if not html.xpath("//input[@name='orilink']/@value"):
