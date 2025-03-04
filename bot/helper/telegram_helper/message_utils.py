@@ -157,7 +157,7 @@ async def delete_message(*args):
     msgs = [msg.delete() for msg in args if msg]
     results = await gather(*msgs, return_exceptions=True)
 
-    for msg, result in zip(args, results):
+    for msg, result in zip(args, results, strict=False):
         if isinstance(result, Exception):
             LOGGER.error(f"Failed to delete message {msg}: {result}", exc_info=True)
 
