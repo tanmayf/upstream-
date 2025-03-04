@@ -1,5 +1,5 @@
 # ruff: noqa: RUF006
-from asyncio import gather, sleep, create_task
+from asyncio import create_task, gather, sleep
 from html import escape
 
 from aiofiles.os import listdir, makedirs, remove
