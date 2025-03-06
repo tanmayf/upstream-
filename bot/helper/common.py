@@ -1148,7 +1148,7 @@ class TaskConfig:
                     res = await ffmpeg.metadata_watermark_cmds(cmd, dl_path)
                     if res:
                         os.replace(temp_file, dl_path)
-                    else:
+                    elif await aiopath.exists(temp_file):
                         os.remove(temp_file)
         else:
             for dirpath, _, files in await sync_to_async(
@@ -1186,7 +1186,7 @@ class TaskConfig:
                             )
                             if res:
                                 os.replace(temp_file, file_path)
-                            else:
+                            elif await aiopath.exists(temp_file):
                                 os.remove(temp_file)
         if checked:
             cpu_eater_lock.release()
@@ -1216,7 +1216,7 @@ class TaskConfig:
                     res = await ffmpeg.metadata_watermark_cmds(cmd, dl_path)
                     if res:
                         os.replace(temp_file, dl_path)
-                    else:
+                    elif await aiopath.exists(temp_file):
                         os.remove(temp_file)
         else:
             for dirpath, _, files in await sync_to_async(
@@ -1253,7 +1253,7 @@ class TaskConfig:
                             )
                             if res:
                                 os.replace(temp_file, file_path)
-                            else:
+                            elif await aiopath.exists(temp_file):
                                 os.remove(temp_file)
         if checked:
             cpu_eater_lock.release()
@@ -1283,7 +1283,7 @@ class TaskConfig:
                     res = await ffmpeg.metadata_watermark_cmds(cmd, dl_path)
                     if res:
                         os.replace(temp_file, dl_path)
-                    else:
+                    elif await aiopath.exists(temp_file):
                         os.remove(temp_file)
         else:
             for dirpath, _, files in await sync_to_async(
@@ -1320,7 +1320,7 @@ class TaskConfig:
                             )
                             if res:
                                 os.replace(temp_file, file_path)
-                            else:
+                            elif await aiopath.exists(temp_file):
                                 os.remove(temp_file)
         if checked:
             cpu_eater_lock.release()
