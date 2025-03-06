@@ -2002,9 +2002,9 @@ def instagram(link: str) -> str:
     """
     if not Config.INSTADL_API:
         raise DirectDownloadLinkException(
-            f"ERROR: Instagram downloader API not added, Try ytdl commans"
+            f"ERROR: Instagram downloader API not added, Try ytdl commands"
         )
-    full_url = f"{Config.INSTADL_API}?postUrl={link}"
+    full_url = f"{Config.INSTADL_API}/api/video?postUrl={link}"
 
     try:
         response = get(full_url)
