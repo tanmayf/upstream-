@@ -48,6 +48,7 @@ from bot.helper.mirror_leech_utils.telegram_uploader import TelegramUploader
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.message_utils import (
     auto_delete_message,
+    delete_message,
     delete_status,
     send_message,
     update_status_message,
