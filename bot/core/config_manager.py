@@ -73,7 +73,6 @@ class Config:
     HYDRA_IP: str = ""
     HYDRA_API_KEY: str = ""
     INSTADL_API: str = ""
-    XFSYZ: str = ""
 
     @classmethod
     def get(cls, key):
