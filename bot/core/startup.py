@@ -69,42 +69,54 @@ async def load_settings():
         BOT_ID = Config.BOT_TOKEN.split(":", 1)[0]
         current_deploy_config = Config.get_all()  # From config.py + env
         old_deploy_config = await database.db.settings.deployConfig.find_one(
-            {"_id": BOT_ID}, {"_id": 0}
+            {"_id": BOT_ID},
+            {"_id": 0},
         )
 
         # 1. Handle deployConfig (config.py mirror)
         if old_deploy_config is None:
             # First deployment
             await database.db.settings.deployConfig.replace_one(
-                {"_id": BOT_ID}, current_deploy_config, upsert=True
+                {"_id": BOT_ID},
+                current_deploy_config,
+                upsert=True,
             )
         elif old_deploy_config != current_deploy_config:
             # New variables detected in config.py
-            runtime_config = await database.db.settings.config.find_one(
-                {"_id": BOT_ID}, {"_id": 0}
-            ) or {}
+            runtime_config = (
+                await database.db.settings.config.find_one(
+                    {"_id": BOT_ID},
+                    {"_id": 0},
+                )
+                or {}
+            )
 
             # 2. Merge new variables from config.py into runtime config
             new_vars = {
-                k: v 
-                for k, v in current_deploy_config.items() 
+                k: v
+                for k, v in current_deploy_config.items()
                 if k not in runtime_config  # Only add NEW keys
             }
             if new_vars:
                 runtime_config.update(new_vars)
                 await database.db.settings.config.replace_one(
-                    {"_id": BOT_ID}, runtime_config, upsert=True
+                    {"_id": BOT_ID},
+                    runtime_config,
+                    upsert=True,
                 )
                 LOGGER.info(f"Added new variables: {list(new_vars.keys())}")
 
             # 3. Update deployConfig to match current config.py
             await database.db.settings.deployConfig.replace_one(
-                {"_id": BOT_ID}, current_deploy_config, upsert=True
+                {"_id": BOT_ID},
+                current_deploy_config,
+                upsert=True,
             )
 
         # 4. Load runtime config into memory
         runtime_config = await database.db.settings.config.find_one(
-            {"_id": BOT_ID}, {"_id": 0}
+            {"_id": BOT_ID},
+            {"_id": 0},
         )
         if runtime_config:
             Config.load_dict(runtime_config)
