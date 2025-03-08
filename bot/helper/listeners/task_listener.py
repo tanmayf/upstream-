@@ -258,6 +258,10 @@ class TaskListener(TaskConfig):
                 return
             self.is_file = await aiopath.isfile(up_path)
             self.name = up_path.replace(f"{up_dir}/", "").split("/", 1)[0]
+        
+        up_path = await self.remove_www_prefix(up_path)
+        self.is_file = await aiopath.isfile(up_path)
+        self.name = up_path.replace(f"{up_dir}/", "").split("/", 1)[0]
 
         if self.screen_shots:
             up_path = await self.generate_screenshots(up_path)
