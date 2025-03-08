@@ -855,11 +855,10 @@ class TaskConfig:
                 await move(f_path, ospath.join(dirpath, new_name))
         return dl_path
 
-
     async def remove_www_prefix(self, dl_path):
         def clean_filename(name):
             return sub(r"^www\.[^ ]+\s*", "", name, flags=IGNORECASE)
-    
+
         if self.is_file:
             up_dir, name = dl_path.rsplit("/", 1)
             new_name = clean_filename(name)
@@ -868,7 +867,7 @@ class TaskConfig:
             new_path = ospath.join(up_dir, new_name)
             await move(dl_path, new_path)
             return new_path
-    
+
         for dirpath, _, files in await to_thread(walk, dl_path):
             for file_ in files:
                 f_path = ospath.join(dirpath, file_)
@@ -876,9 +875,8 @@ class TaskConfig:
                 if new_name == file_:
                     continue
                 await move(f_path, ospath.join(dirpath, new_name))
-    
-        return dl_path
 
+        return dl_path
 
     async def generate_screenshots(self, dl_path):
         ss_nb = int(self.screen_shots) if isinstance(self.screen_shots, str) else 10
