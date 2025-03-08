@@ -78,11 +78,12 @@ async def load_settings():
                 config_file,
                 upsert=True,
             )
-        if old_config and old_config != config_file:
-            LOGGER.info("Replacing existing deploy config in Database")
+        elif old_config != config_file:
+            merged_config = {**old_config, **config_file}
+            LOGGER.info("Updating deploy config in Database with new variables")
             await database.db.settings.deployConfig.replace_one(
                 {"_id": BOT_ID},
-                config_file,
+                merged_config,
                 upsert=True,
             )
         else:
