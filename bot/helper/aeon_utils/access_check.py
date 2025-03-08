@@ -23,7 +23,7 @@ async def error_check(message):
     user_id = user.id
     token_timeout = Config.TOKEN_TIMEOUT
     if Config.RSS_CHAT and user_id == int(Config.RSS_CHAT):
-         return None, None
+        return None, None
 
     if message.chat.type != message.chat.type.BOT:
         if FSUB_IDS := Config.FSUB_IDS:
