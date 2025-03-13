@@ -35,6 +35,8 @@ def direct_link_generator(link):
         return buzzheavier(link)
     if "devuploads" in domain:
         return devuploads(link)
+    if "lulacloud.com" in domain:
+        return lulacloud(link)
     if "fuckingfast.co" in domain:
         return fuckingfast_dl(link)
     if "mediafire.com" in domain:
@@ -290,6 +292,22 @@ def fuckingfast_dl(url):
         raise DirectDownloadLinkException(f"ERROR: {str(e)}") from e
     finally:
         session.close()
+
+
+def lulacloud(url):
+     """
+     Generate a direct download link for www.lulacloud.com URLs.
+     @param url: URL from www.lulacloud.com
+     @return: Direct download link
+     """
+     session = Session()
+     try:
+         res = session.post(url, headers={'Referer': url}, allow_redirects=False)
+         return res.headers['location']
+     except Exception as e:
+         raise DirectDownloadLinkException(f"ERROR: {str(e)}") from e
+     finally:
+         session.close()
 
 
 def devuploads(url):
